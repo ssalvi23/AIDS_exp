@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Chart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        /* Style for the bars */
+        .bar {
+            fill: lightblue;
+        }
+        /* Style for bar hover */
+        .bar:hover {
+            fill: coral;
+        }
+        /* Axis label style */
+        .axis-label {
+            font-size: 12px;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Performance Bar Chart</h1>
+    <svg width="600" height="400"></svg>
+
+    <script>
+        // Sample data for students' scores
+        const data = [
+            { name: "Alice", score: 85 },
+            { name: "Bob", score: 92 },
+            { name: "Charlie", score: 78 },
+            { name: "David", score: 88 },
+            { name: "Eva", score: 76 }
+        ];
+
+        // Set up chart dimensions and margins
+        const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+        const width = 600 - margin.left - margin.right;
+        const height = 400 - margin.top - margin.bottom;
+
+        // Create an SVG container with margins
+        const svg = d3.select("svg")
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Create x scale for student names
+        const x = d3.scaleBand()
+            .domain(data.map(d => d.name))
+            .range([0, width])
+            .padding(0.1);
+
+        // Create y scale for scores
+        const y = d3.scaleLinear()
+            .domain([0, 100])  // Assuming score is out of 100
+            .range([height, 0]);
+
+        // Draw x axis with student names
+        svg.append("g")
+            .attr("transform", `translate(0,${height})`)
+            .call(d3.axisBottom(x))
+            .selectAll("text")
+            .attr("class", "axis-label");
+
+        // Draw y axis with score range
+        svg.append("g")
+            .call(d3.axisLeft(y).ticks(10))
+            .selectAll("text")
+            .attr("class", "axis-label");
+
+        // Draw bars for each student's score
+        svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", d => x(d.name))
+            .attr("y", d => y(d.score))
+            .attr("width", x.bandwidth())
+            .attr("height", d => height - y(d.score));
+    </script>
+</body>
+</html>
