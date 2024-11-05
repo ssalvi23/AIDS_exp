@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <title>Student Performance Analysis - No API</title>
+
+  <style>
+
+    body {
+
+      font-family: Arial, sans-serif;
+
+      text-align: center;
+
+      margin: 0;
+
+      padding: 30px;
+
+    }
+
+    #charts-container {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      justify-content: space-around;
+
+      align-items: center;
+
+    }
+
+    .chart {
+
+      width: 400px;
+
+      height: 400px;
+
+      margin: 12px;
+
+    }
+
+    h2 {
+
+      margin: 10px 0;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <h1>Student Performance Analysis</h1>
+
+  <div id="charts-container">
+
+    <div class="chart">
+
+      <h2>Pie Chart: Grade Distribution</h2>
+
+      <canvas id="pieChart" width="400" height="400"></canvas>
+
+    </div>
+
+    <div class="chart">
+
+      <h2>Bar Chart: Average Scores by Subject</h2>
+
+      <canvas id="barChart" width="400" height="400"></canvas>
+
+    </div>
+
+    <div class="chart">
+
+      <h2>Line Chart: Study Time vs GPA</h2>
+
+      <canvas id="lineChart" width="400" height="400"></canvas>
+
+    </div>
+
+  </div>
+
+
+
+  <script>
+
+    // Pie Chart: Grade Distribution
+
+    function drawPieChart() {
+
+      const ctx = document.getElementById('pieChart').getContext('2d');
+
+      const data = [40, 35, 20, 5]; // Grade A, B, C, D
+
+      const labels = ['A', 'B', 'C', 'D'];
+
+      const colors = ['#4CAF50', '#FF9800', '#2196F3', '#F44336'];
+
+
+
+      const total = data.reduce((sum, value) => sum + value, 0);
+
+      let startAngle = 0;
+
+
+
+      data.forEach((value, index) => {
+
+        const sliceAngle = (value / total) * 2 * Math.PI;
+
+        ctx.fillStyle = colors[index];
+
+        ctx.beginPath();
+
+        ctx.moveTo(200, 200);  
+
+        ctx.arc(200, 200, 150, startAngle, startAngle + sliceAngle);
+
+        ctx.closePath();
+
+        ctx.fill();
+
+
+
+        startAngle += sliceAngle;
+
+
+
+        const midAngle = startAngle - sliceAngle / 2;
+
+        const labelX = 200 + 180 * Math.cos(midAngle);
+
+        const labelY = 200 + 180 * Math.sin(midAngle);
+
+        ctx.fillStyle = 'black';
+
+        ctx.font = '16px Arial';
+
+        ctx.fillText(labels[index], labelX, labelY);
+
+      });
+
+    }
+
+
+
+    // Bar Chart: Average Scores by Subject
+
+    function drawBarChart() {
+
+      const ctx = document.getElementById('barChart').getContext('2d');
+
+      const data = [85, 78, 92, 88]; 
+
+      const labels = ['Math', 'Science', 'English', 'History'];
+
+      const colors = ['#4CAF50', '#FF9800', '#2196F3', '#F44336'];
+
+      
+
+      const maxScore = 100;
+
+      const barWidth = 60;
+
+
+
+      data.forEach((value, index) => {
+
+        const barHeight = (value / maxScore) * 300;  
+
+        const x = index * (barWidth + 30) + 50;
+
+        const y = 350 - barHeight;
+
+
+
+        ctx.fillStyle = colors[index];
+
+        ctx.fillRect(x, y, barWidth, barHeight);
+
+        ctx.fillStyle = 'black';
+
+        ctx.font = '16px Arial';
+
+        ctx.fillText(labels[index], x, 370);
+
+        ctx.fillText(value, x + 10, y - 10);  
+
+      });
+
+    }
+
+
+
+    // Line Chart: Study Time vs GPA
+
+    function drawLineChart() {
+
+      const ctx = document.getElementById('lineChart').getContext('2d');
+
+      const data = [[5, 2.5], [10, 3.0], [15, 3.5], [20, 3.8], [25, 4.0]];
+
+      ctx.beginPath();
+
+      ctx.moveTo(50, 350 - data[0][1] * 70); 
+
+
+
+      data.forEach((point, index) => {
+
+        const x = index * 80 + 50;
+
+        const y = 350 - point[1] * 70;
+
+        ctx.lineTo(x, y);
+
+      });
+
+      ctx.strokeStyle = '#FF5722';
+
+      ctx.lineWidth = 2;
+
+      ctx.stroke();
+
+      data.forEach((point, index) => {
+
+        const x = index * 80 + 50;
+
+        const y = 350 - point[1] * 70;
+
+        ctx.beginPath();
+
+        ctx.arc(x, y, 5, 0, 2 * Math.PI);  
+
+        ctx.fillStyle = '#FF5722';
+
+        ctx.fill();
+
+
+
+        ctx.fillStyle = 'black';
+
+        ctx.fillText(`${point[0]}h`, x - 10, 370);  
+
+        ctx.fillText(point[1], x - 10, y - 10);  
+
+      });
+
+    }
+
+    drawPieChart();
+
+    drawBarChart();
+
+    drawLineChart();
+
+  </script>
+
+</body>
+
+</html>
