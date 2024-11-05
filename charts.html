@@ -1,3 +1,8 @@
+
+from IPython.core.display import display, HTML
+
+# HTML and JavaScript code to create a Google Pie Chart
+chart_code = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,3 +60,5 @@
     <div id="bar_chart_div" style="width: 900px; height: 500px;"></div>
 </body>
 </html>
+"""
+display(HTML(chart_code))
